@@ -1,0 +1,163 @@
+{
+  "source": "x = 10\nfor i in range(3):\n    x += i\nprint(x)",
+  "source_lines": [
+    "x = 10",
+    "for i in range(3):",
+    "    x += i",
+    "print(x)"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "event": "line",
+      "line_number": 1,
+      "source_line": "x = 10",
+      "variables": {},
+      "changes": {
+        "created": {},
+        "updated": {},
+        "deleted": {}
+      }
+    },
+    {
+      "step": 2,
+      "event": "line",
+      "line_number": 2,
+      "source_line": "for i in range(3):",
+      "variables": {
+        "x": { "type": "int", "value": 10 }
+      },
+      "changes": {
+        "created": { "x": { "type": "int", "value": 10 } },
+        "updated": {},
+        "deleted": {}
+      },
+      "control_flow": {
+        "type": "loop",
+        "expression": "for i in range(3):"
+      }
+    },
+    {
+      "step": 3,
+      "event": "line",
+      "line_number": 3,
+      "source_line": "    x += i",
+      "variables": {
+        "x": { "type": "int", "value": 10 },
+        "i": { "type": "int", "value": 0 }
+      },
+      "changes": {
+        "created": { "i": { "type": "int", "value": 0 } },
+        "updated": {},
+        "deleted": {}
+      }
+    },
+    {
+      "step": 4,
+      "event": "line",
+      "line_number": 2,
+      "source_line": "for i in range(3):",
+      "variables": {
+        "x": { "type": "int", "value": 10 },
+        "i": { "type": "int", "value": 0 }
+      },
+      "changes": {
+        "created": {},
+        "updated": {},
+        "deleted": {}
+      },
+      "control_flow": {
+        "type": "loop",
+        "expression": "for i in range(3):"
+      }
+    },
+    {
+      "step": 5,
+      "event": "line",
+      "line_number": 3,
+      "source_line": "    x += i",
+      "variables": {
+        "x": { "type": "int", "value": 10 },
+        "i": { "type": "int", "value": 1 }
+      },
+      "changes": {
+        "created": {},
+        "updated": {
+          "i": {
+            "from": { "type": "int", "value": 0 },
+            "to": { "type": "int", "value": 1 }
+          }
+        },
+        "deleted": {}
+      }
+    },
+    {
+      "step": 6,
+      "event": "line",
+      "line_number": 2,
+      "source_line": "for i in range(3):",
+      "variables": {
+        "x": { "type": "int", "value": 11 },
+        "i": { "type": "int", "value": 1 }
+      },
+      "changes": {
+        "created": {},
+        "updated": {
+          "x": {
+            "from": { "type": "int", "value": 10 },
+            "to": { "type": "int", "value": 11 }
+          }
+        },
+        "deleted": {}
+      },
+      "control_flow": {
+        "type": "loop",
+        "expression": "for i in range(3):"
+      }
+    },
+    {
+      "step": 7,
+      "event": "line",
+      "line_number": 3,
+      "source_line": "    x += i",
+      "variables": {
+        "x": { "type": "int", "value": 11 },
+        "i": { "type": "int", "value": 2 }
+      },
+      "changes": {
+        "created": {},
+        "updated": {
+          "i": {
+            "from": { "type": "int", "value": 1 },
+            "to": { "type": "int", "value": 2 }
+          }
+        },
+        "deleted": {}
+      }
+    },
+    {
+      "step": 8,
+      "event": "line",
+      "line_number": 4,
+      "source_line": "print(x)",
+      "variables": {
+        "x": { "type": "int", "value": 13 },
+        "i": { "type": "int", "value": 2 }
+      },
+      "changes": {
+        "created": {},
+        "updated": {
+          "x": {
+            "from": { "type": "int", "value": 11 },
+            "to": { "type": "int", "value": 13 }
+          }
+        },
+        "deleted": {}
+      }
+    }
+  ],
+  "step_count": 8,
+  "completed": true,
+  "error": null,
+  "truncated": false
+}

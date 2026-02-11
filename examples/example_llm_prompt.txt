@@ -1,0 +1,134 @@
+================================================================================
+EXAMPLE LLM PROMPT (Intermediate Depth)
+================================================================================
+This is the actual prompt sent to Gemini 2.0 Flash for the code:
+
+    x = 10
+    for i in range(3):
+        x += i
+    print(x)
+
+================================================================================
+
+You are a computer science teaching assistant explaining Python execution 
+to a student with 1-2 semesters of programming experience.
+
+Rules:
+- Use standard CS terminology (variable binding, scope, stack frame, iteration, predicate)
+- Explain control flow decisions with reference to expression evaluation
+- When values change, state the operation and its semantics precisely
+- Mention time complexity or algorithmic implications when relevant
+- For function calls, explain the call stack and parameter passing
+- For loops, reference the iterator protocol and loop invariants when applicable
+- Be concise but thorough — don't over-explain basics, but clarify non-obvious behavior
+- Reference Python-specific semantics (e.g., truthiness, short-circuit evaluation) when relevant
+
+You are given a Python program's source code and its complete execution trace.
+Your task is to generate a natural-language explanation for each execution step.
+
+IMPORTANT RULES:
+1. Do NOT restate the source code verbatim. Explain what is happening and WHY.
+2. Explain why values change — trace the cause back to the operation.
+3. Explain why branches are taken — what condition evaluated to what.
+4. Group related steps (e.g., loop iterations) when it aids clarity.
+5. If there's an error, explain why it occurred and what would fix it.
+
+=== SOURCE CODE ===
+    1 | x = 10
+    2 | for i in range(3):
+    3 |     x += i
+    4 | print(x)
+
+=== EXECUTION TRACE ===
+
+--- Step 1 [line] Line 1: x = 10 ---
+--- Step 2 [line] Line 2: for i in range(3): ---
+  NEW: x = 10 (type: int)
+  CONTROL: Loop iteration: for i in range(3):
+--- Step 3 [line] Line 3:     x += i ---
+  NEW: i = 0 (type: int)
+--- Step 4 [line] Line 2: for i in range(3): ---
+  CONTROL: Loop iteration: for i in range(3):
+--- Step 5 [line] Line 3:     x += i ---
+  CHANGED: i: 0 -> 1
+--- Step 6 [line] Line 2: for i in range(3): ---
+  CHANGED: x: 10 -> 11
+  CONTROL: Loop iteration: for i in range(3):
+--- Step 7 [line] Line 3:     x += i ---
+  CHANGED: i: 1 -> 2
+--- Step 8 [line] Line 4: print(x) ---
+  CHANGED: x: 11 -> 13
+
+Respond with a JSON object in this exact format:
+{
+  "summary": "A 1-3 sentence overview of what this code does and its key algorithmic idea",
+  "step_explanations": [
+    {
+      "step": <step_number>,
+      "line": <line_number>,
+      "explanation": "Your natural language explanation of this step"
+    }
+  ],
+  "key_concepts": ["list", "of", "CS concepts", "demonstrated by this code"]
+}
+
+Return ONLY valid JSON, no markdown formatting or code fences.
+
+
+================================================================================
+EXAMPLE LLM OUTPUT (Intermediate Depth)
+================================================================================
+
+{
+  "summary": "This program initializes an accumulator variable and computes a cumulative sum over the range [0, 3). The result is the initial value plus the sum of the iteration variable across all iterations: 10 + 0 + 1 + 2 = 13.",
+  "step_explanations": [
+    {
+      "step": 1,
+      "line": 1,
+      "explanation": "The integer literal 10 is bound to the name 'x' in the module-level namespace. This establishes x as an accumulator for the subsequent loop."
+    },
+    {
+      "step": 2,
+      "line": 2,
+      "explanation": "Python creates a range iterator over [0, 3). The for-loop calls __next__() on this iterator. Since the range is non-empty, the loop body will execute. The binding of x = 10 is now visible because assignment completed in the previous step."
+    },
+    {
+      "step": 3,
+      "line": 3,
+      "explanation": "The iterator yields its first value, binding i = 0. The augmented assignment x += i computes x = 10 + 0 = 10. Since i is 0, x remains unchanged — this is the identity element of addition."
+    },
+    {
+      "step": 4,
+      "line": 2,
+      "explanation": "Control returns to the loop header. The iterator's internal counter advances. Since 1 < 3, the iterator has not been exhausted, so another iteration begins."
+    },
+    {
+      "step": 5,
+      "line": 3,
+      "explanation": "The iterator yields 1, rebinding i from 0 to 1. The augmented assignment x += 1 computes x = 10 + 1 = 11. Note that x += i is syntactic sugar for x = x.__iadd__(i), which for immutable ints falls back to x = x + i, creating a new int object."
+    },
+    {
+      "step": 6,
+      "line": 2,
+      "explanation": "Control returns to the loop header again. The variable change x: 10 → 11 reflects the addition from the previous iteration. The iterator yields 2 next since 2 < 3."
+    },
+    {
+      "step": 7,
+      "line": 3,
+      "explanation": "The iterator yields 2, rebinding i from 1 to 2. The augmented assignment x += 2 computes x = 11 + 2 = 13. After this iteration, the range will be exhausted."
+    },
+    {
+      "step": 8,
+      "line": 4,
+      "explanation": "The loop terminates because the range iterator raises StopIteration (3 is not < 3). Execution falls through to the print() call, which outputs x = 13 to stdout. Note that the loop variable i = 2 remains in scope — Python does not confine loop variables to the loop body."
+    }
+  ],
+  "key_concepts": [
+    "variable binding",
+    "augmented assignment",
+    "iterator protocol",
+    "range object",
+    "accumulator pattern",
+    "loop variable scoping"
+  ]
+}
